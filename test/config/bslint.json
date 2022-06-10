@@ -1,0 +1,32 @@
+{
+	"rules": {
+		"inline-if-style": "then",
+		"block-if-style": "no-then",
+		"condition-style": "no-group",
+		"named-function-style": "auto",
+		"anon-function-style": "auto",
+		"aa-comma-style": "off",
+		"no-print": "off",
+
+		"type-annotations": "return",
+
+		"assign-all-paths": "error",
+		"unsafe-path-loop": "error",
+		"unsafe-iterators": "error",
+		"unreachable-code": "info",
+		"case-sensitivity": "warn",
+		"unused-variable": "warn",
+		"consistent-return": "error"
+	},
+	"globals": [
+	],
+	"ignores": [
+		"**/.n/**/*",
+		"node_modules/**/*",
+		"!components/**/*",
+		"!source/**/*",
+		"**/tests/**/*.spec.bs",
+		"**/*.test.bs",
+		"**/*.test.brs"
+	]
+}

@@ -1,0 +1,708 @@
+%YAML 1.2
+---
+# Started as a mod to https://github.com/rokudev/sublimetext-package
+# Converted to sublime-syntax format from tmLanguage format
+# Rewrtitten to improve highlights and add some basic syntax checking that complies with
+# https://developer.roku.com/en-gb/docs/references/brightscript/language/brightscript-language-reference.md
+name: BrightScript
+file_extensions:
+  - brs
+version: 2
+scope: source.brightscript
+
+variables:
+  space: '[ \t]'
+  name: '[A-Za-z_][A-Za-z_0-9]*'
+  # Variable declaration can include type marker:
+  # - $ for string
+  # - % for integer
+  # - ! for float
+  # - # for double
+  # - & for long integer
+  typechar: '[$%!#&]?'
+  typename: '\b(?i:Boolean|Integer|LongInteger|Float|Double|String|Object|Function|Invalid|Void|Dynamic)\b'
+  # Operators: https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#operators
+  dot: '\??[.]'
+  attr: '\??@'
+  array: '\??\['
+  func: '\??\('
+  assignment: '(?:[+\-*/\\]|<<|>>)?='
+  exponentation: '\^'
+  additive: '(?:[\-+]|--|\+\+)'
+  multiplicative: '(?i:[*/\\]|\bMOD\b)'
+  bitshift: '(?:<<|>>)'
+  comparisons: '(?:<|>|=|<>|<=|>=)'
+  logical: '\b(?i:NOT|AND|OR)\b'
+  operator: '(?:{{assignment}}|{{exponentation}}|{{additive}}|{{multiplicative}}|{{bitshift}}|{{comparisons}}|{{logical}})'
+  # control
+  control: '\b(?i:if|then|else|elseif|end if|for|to|step|for each|in|exit for|end for|while|exit while|end while|try|catch|end\s?try|throw|end|goto|stop|return|print)\b'
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/runtime-functions.md
+  globalRuntimeFunctions: '\b(?i:CreateObject|Type|GetGlobalAA|Box|Run|Eval|GetLastRunCompileError|GetLastRunRuntimeError)\b'
+  # https://developer.roku.com/docs/references/brightscript/language/global-utility-functions.md
+  globalUtilityFunctions: '\b(?i:Sleep|Wait|GetInterface|FindMemberFunction|UpTime|RebootSystem|ListDir|ReadAsciiFile|WriteAsciiFile|CopyFile|MoveFile|MatchFiles|DeleteFile|DeleteDirectory|CreateDirectory|FormatDrive|StroToI|RunGarbageCollector|ParseJson|FormatJson|Tr)\b'
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/global-string-functions.md
+  globalStringFunctions: '\b(?i:UCase|LCase|Asc|Chr|Instr|Left|Len|Mid|Right|Str|StrI|String|StringI|Val|Substitute)\b'
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/global-math-functions.md
+  globalMathFunctions: '\b(?i:Abs|Atn|Cdbl|Cint|Cos|Csng|Exp|Fix|Int|Log|Rnd|Sgn|Sin|Sqr|Tan)\b'
+  globalFunctions: '(?i:{{globalRuntimeFunctions}}|{{globalUtilityFunctions}}|{{globalStringFunctions}}|{{globalMathFunctions}})'
+
+  # See: "BrightScript" section at https://developer.roku.com/en-gb/docs/references/references-overview.md
+  components: '\b(?i:roAppInfo|roAppManager|roArray|roAssociativeArray|roAudioMetadata|roAudioPlayer|roAudioPlayerEvent|roAudioResource|roBitmap|roBoolean|roByteArray|roCaptionRenderer|roCaptionRendererEvent|roChannelStore|roChannelStoreEvent|roCodeRegistrationScreen|roCodeRegistrationScreenEvent|roCompositor|roDataGramSocket|roDateTime|roDeviceInfo|roDeviceInfoEvent|roDouble|roEVPCipher|roEVPDigest|roFileSystem|roFileSystemEvent|roFloat|roFont|roFontMetrics (deprecated)|roFontRegistry|roFunction|roGridScreen|roGridScreenEvent|roHMAC|roHdmiHotPlugEvent|roHdmiStatus|roHdmiStatusEvent|roHttpAgent|roImageCanvas|roImageCanvasEvent|roImageMetadata|roInput|roInputEvent|roInt|roInvalid|roKeyboardScreen|roKeyboardScreenEvent|roList|roListScreen|roListScreenEvent|roLocalization|roLongInteger|roMessageDialog|roMessageDialogEvent|roMessagePort|roOneLineDialog|roOneLineDialogEvent|roParagraphScreen|roParagraphScreenEvent|roPath|roPinEntryDialog|roPinEntryDialogEvent|roPosterScreen|roPosterScreenEvent|roProgramGuide|roRSA|roRegex|roRegion|roRegistry|roRegistrySection|roSGNode|roSGNodeEvent|roSGScreen|roSGScreenEvent|roScreen|roSearchHistory|roSearchScreen|roSearchScreenEvent|roSlideShow|roSlideShowEvent|roSocketAddress|roSocketEvent|roSpringboardScreen|roSpringboardScreenEvent|roSprite|roStreamSocket|roString|roSystemLog|roSystemLogEvent|roTextScreen|roTextScreenEvent|roTextToSpeech|roTextToSpeechEvent|roTextureManager|roTextureRequest|roTextureRequestEvent|roTimespan|roTuner|roTunerEvent|roUniversalControlEvent|roUrlEvent|roUrlTransfer|roVideoPlayer|roVideoPlayerEvent|roVideoScreen|roVideoScreenEvent|roXMLElement|roXMLList)\b'
+  interfaces: '\b(?i:ifAppInfo|ifAppManager|ifArray|ifArrayGet|ifArraySet|ifArraySort|ifAssociativeArray|ifAudioMetadata|ifAudioPlayer|ifAudioResource|ifBoolean|ifByteArray|ifCaptionRenderer|ifChannelStore|ifCodeRegistrationScreen|ifCompositor|ifDateTime|ifDeviceInfo|ifDouble|ifDraw2D|ifEVPCipher|ifEVPDigest|ifEnum|ifFileSystem|ifFloat|ifFont|ifFontMetrics|ifFontRegistry|ifFunction|ifGetMessagePort|ifGridScreen|ifHMAC|ifHdmiStatus|ifHttpAgent|ifImageCanvas|ifImageMetadata|ifInput|ifInt|ifIntOps|ifKeyboardScreen|ifList|ifListScreen|ifLocalization|ifLongInt|ifMessageDialog|ifMessagePort|ifOneLineDialog|ifParagraphScreen|ifPath|ifPinEntryDialog|ifPosterScreen|ifProgramGuide|ifRSA|ifRegex|ifRegion|ifRegistry|ifRegistrySection|ifRoSGScreen|ifSGNodeBoundingRect|ifSGNodeChildren|ifSGNodeDict|ifSGNodeField|ifSGNodeFocus|ifSGNodeHttpAgentAccess|ifScreen|ifSearchHistory|ifSearchScreen|ifSetMessagePort|ifSlideShow|ifSocket|ifSocketAddress|ifSocketAsync|ifSocketCastOption|ifSocketConnection|ifSocketConnectionOption|ifSocketConnectionStatus|ifSocketOption|ifSocketStatus|ifSourceIdentity|ifSpringboardScreen|ifSprite|ifString|ifStringOps|ifSystemLog|ifTextScreen|ifTextToSpeech|ifTextureManager|ifTextureRequest|ifTimespan|ifToStr|ifTuner|ifUrlTransfer|ifVideoPlayer|ifVideoScreen|ifXMLElement|ifXMLList)\b'
+  classes: '(?:{{components}}|{{interfaces}})'
+
+  #knownFields: (?i:\b\.(MaxVideoDecodeResolution|active|addItemSpacingAfterChild|animateToItem|audioFormat|audioTrack|availableAudioTracks|availableSubtitleTracks|backExitsScene|backgroundColor|backgroundURI|backgroundUri|basePosterSize|bifDisplay|bitmapHeight|bitmapWidth|blendColor|bufferingBar|bufferingStatus|bufferingTextColor|bulletText|bulletTextColor|bulletTextFont|busySpinner|buttonFocused|buttonGroup|buttonHeight|buttonSelected|buttons|caption1Color|caption1Font|caption1NumLines|caption2Color|caption2Font|caption2NumLines|captionBackgroundBitmapUri|captionHorizAlignment|captionLineSpacing|captionVertAlignment|catalog|cgms|change|checkOnSelect|checkedIconUri|checkedItem|checkedState|childRenderOrder|clippingRect|clockColor|clockText|clockwise|close|color|columnSpacings|columnWidths|command|completedStreamInfo|content|contentIndex|contentIsPlaylist|control|createNextPanelIndex|createNextPanelOnItemFocus|cursorPosition|delay|deltaOrder|dialog|displayPartialLines|dividerUri|drawFocusFeedback|drawFocusFeedbackOnTop|duration|easeFunction|easeInPercent|easeOutPercent|ellipsisText|ellipsizeOnBoundary|enableCaptionScrolling|enableScreenSaverWhilePlaying|enableTrickPlay|enableUI|errorCode|errorMessage|errorMsg|failedBitmapOpacity|failedBitmapUri|fakeServer|fieldToInterp|fire|fixedLayout|focusBitmapBlendColor|focusBitmapUri|focusButton|focusColumn|focusFootprintBitmapUri|focusFootprintBlendColor|focusRow|focusable|focusedCheckedIconUri|focusedChild|focusedColor|focusedFont|focusedIconUri|focusedKeyColor|focusedTextColor|focusedTextFont|focusedUncheckedIconUri|font|fraction|functionName|globalCaptionMode|goBackCount|graphicUri|grid|hasNextPanel|height|hintText|hintTextColor|horizAlign|horizAlignment|horizFocusAnimationStyle|iconUri|id|imageWellBitmapUri|inheritParentOpacity|inheritParentTransform|isFullScreen|isGoingBack|isOffscreenLeft|isTextEllipsized|itemClippingRect|itemComponentName|itemFocused|itemSelected|itemSize|itemSpacing|itemSpacings|itemUnfocused|jumpToItem|key|keyColor|keyValue|keyboard|keyboardBitmapUri|layoutDirection|leftDividerUri|leftDividerVertOffset|leftLabel|leftOnly|leftOrientation|leftPosition|lineSpacing|list|loadDisplayMode|loadHeight|loadStatus|loadSync|loadWidth|loadingBitmapOpacity|loadingBitmapUri|logoBaselineOffset|logoUri|loop|lowerCase|maskBitmapHeight|maskBitmapWidth|maskOffset|maskSize|maskUri|maxLines|maxTextLength|maxWidth|message|messageColor|messageFont|minWidth|mute|nextContentIndex|nextPanel|notificationInterval|numColumns|numLines|numPanels|numRenderPasses|numRows|opacity|optionsAvailable|optionsColor|optionsDialog|optionsDimColor|optionsIconColor|optionsIconDimColor|order|orderStatus|overhang|overhangTitle|panelSet|panelSize|pauseBufferEnd|pauseBufferOverflow|pauseBufferStart|pin|pinDisplayBitmapUri|pinDisplayTextColor|pinLength|pinPad|position|poster|posterDisplayMode|privacyHintColor|purchases|renderPass|repeat|repeatCount|requestedUserData|retrievingBar|retrievingTextColor|rightDividerUri|rightDividerVertOffset|rightJustify|rightLabel|rotation|rowHeights|rowSpacings|scale|scaleRotateCenter|scrollSpeed|scrollbarThumbBitmapUri|scrollbarTrackBitmapUri|sectionDividerBitmapUri|sectionDividerFont|sectionDividerHeight|sectionDividerLeftOffset|sectionDividerMinWidth|sectionDividerSpacing|sectionDividerTextColor|sectionDividerWidth|secureMode|seek|selectButtonMovesPanelForward|showBackgroundForEmptyCaptions|showClock|showFocusFootprint|showOptions|showPinDisplay|showSectionLabels|showTextEditBox|size|slideDuration|spinInterval|state|storeCatalog|streamInfo|streamingSegment|subtitleTrack|text|textColor|textEditBox|textFont|textHorizAlign|timeToStartStreaming|timedMetaData|timedMetaDataSelectionKeys|title|titleColor|translation|trickPlayBar|truncateOnDelimiter|uncheckedIconUri|uri|useAtlas|userData|vertAlign|vertAlignment|vertFocusAnimationStyle|videoFormat|visible|wasClosed|width|wordBreakChars|wrap|wrapDividerBitmapUri|wrapDividerHeight|wrapDividerWidth)\b)
+
+contexts:
+  # Unless written otherwise, order matters for all of these!
+
+  main:
+    - include: comments
+    - include: functions
+    - include: consts
+    - match: ([^\s])+
+      scope: invalid.illegal.non-function-or-comment
+
+  code-block:
+    - meta_scope: meta.block.brightscript
+    - include: comments
+    - include: consts
+    - include: program-statements
+    - include: function-call
+    - include: assignment
+    - match: (?:[^\s]+)
+      scope: invalid.illegal.non-code-block-content
+
+  comments:
+    - match: (?:\s*)((')(?:[^\n]+|(?=\n)))
+      captures:
+        1: comment.line.apostrophe.brightscript
+        2: punctuation.definition.comment.apostrophe.brightscript
+    - match: (?:\b|\s*)((?i:(rem))(?:[ \t][^\n]*|(?=\n)))
+      captures:
+        1: comment.line.rem.brightscript
+        2: punctuation.definition.comment.rem.brightscript
+    - match: (?i:(#if{{space}}+false))
+      scope: punctuation.definition.comment.brightscript
+      push:
+        - meta_scope: comment.block.brightscript
+        - match: (?:\w|W)*(?i:(#end if))
+          captures:
+            1: punctuation.definition.comment.brightscript
+          pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/conditional-compilation.md
+  consts:
+    - match: (?i:(#)(const)\s+({{name}}){{space}}*(=){{space}}*(?:(true|false)|({{name}}))\s*)
+      captures:
+        0: meta.preprocessor.brightscript
+        1: keyword.control.brightscript punctuation.definition.keyword
+        2: keyword.control.brightscript
+        3: entity.name.constant.brightscript
+        4: keyword.operator.assignment.brightscript
+        5: constant.language.brightscript
+        6: entity.name.constant.brightscript
+    - match: (?i:(#)(if|else{{space}}+if){{space}}+(?:(true|false)|({{name}}))(?:\b|\s+))
+      captures:
+        0: meta.preprocessor.brightscript
+        1: keyword.control.brightscript punctuation.definition.keyword
+        2: keyword.control.brightscript
+        3: constant.language.brightscript
+        4: entity.name.constant.brightscript
+    - match: (?i:(#)(else)(?:\b|\s+))
+      captures:
+        0: meta.preprocessor.brightscript
+        1: keyword.control.brightscript punctuation.definition.keyword
+        2: keyword.control.brightscript
+    - match: (?i:(#)(end{{space}}+if)(?:\b|\s+))
+      captures:
+        0: meta.preprocessor.brightscript
+        1: keyword.control.brightscript punctuation.definition.keyword
+        2: keyword.control.brightscript
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#functionparameter--default-as-type--as-type--end-function
+  functions:
+    - match: (?i:(?:^|\b|\s)(function))(?=\s|\()
+      captures:
+        0: meta.function.brightscript
+        1: keyword.declaration.function.brightscript
+      push: functions-name-or-params
+    - match: (?i:(?:^|\b|\s)(sub))(?=\s|\()
+      captures:
+        0: meta.function.brightscript
+        1: keyword.declaration.function.brightscript
+      push: subs-name-or-params
+
+  closures:
+    - match: (?i:(?:^|\b|\s)(function))(?=\s|\()
+      captures:
+        0: meta.function.brightscript
+        1: keyword.declaration.function.brightscript
+      push: functions-params
+    - match: (?i:(?:^|\b|\s)(sub))(?=\s|\()
+      captures:
+        0: meta.function.brightscript
+        1: keyword.declaration.function.brightscript
+      push: subs-params
+
+  functions-name-or-params:
+    - match: (?:\s+|\b)({{name}})?(?:\s+|\b)
+      captures:
+        0: meta.function.brightscript
+        1: entity.name.function.brightscript
+      set: functions-params
+    - include: functions-params
+
+  subs-name-or-params:
+    - match: (?:\s+|\b)({{name}})?(?:\s+|\b)
+      captures:
+        0: meta.function.brightscript
+        1: entity.name.function.brightscript
+      set: subs-params
+    - include: subs-params
+
+  functions-params:
+    - match: \s*(\()
+      captures:
+        1: punctuation.section.parens.begin.brightscript
+      push:
+        - meta_scope: meta.function.parameters.brightscript meta.parens.brightscript
+        - include: functions-parameters
+        - match: \)
+          scope: punctuation.section.parens.end.brightscript
+          pop: 2
+          set: functions-return-type
+        # - match: (?:[^)]+)
+        #   scope: invalid.illegal.non-parameters-found
+    - match: ([^(]+)
+      scope: invalid.illegal.missing-parameters
+
+  subs-params:
+    - match: \s*(\()
+      captures:
+        1: punctuation.section.parens.begin.brightscript
+      push:
+        - meta_scope: meta.function.parameters.brightscript meta.parens.brightscript
+        - include: functions-parameters
+        - match: \)
+          scope: punctuation.section.parens.end.brightscript
+          pop: 2
+          set: functions-header-end
+          with_prototype:
+            - match: \s*\n
+              push:
+                - meta_scope: meta.function.brightscript meta.block.brightscript
+                - match: (?i:(?:^|\b|\s+)(end sub)(?=\b|\s|$))
+                  captures:
+                    1: keyword.control.brightscript
+                  pop: 2
+                - include: code-block
+    - match: ([^(]+)
+      scope: invalid.illegal.missing-parameters
+
+  functions-return-type:
+    - match: \s+(?i:(as))\s+({{typename}})\b
+      captures:
+        0: meta.function.return-type.brightscript
+        1: keyword.control.brightscript
+        2: keyword.declaration.type.brightscript
+      set: functions-header-end
+      with_prototype:
+        - match: \s*\n
+          push:
+            - meta_scope: meta.function.brightscript meta.block.brightscript
+            - match: (?i:(?:^|\b|\s+)(end function)(?=\b|\s|$))
+              captures:
+                1: keyword.control.brightscript
+              pop: 2
+            - include: code-block
+    - match: ([^\s\n']+)
+      scope: invalid.illegal.non-return-type-found
+
+  functions-header-end:
+    - include: comments
+    - match: ([^\s\n]+)
+      scope: invalid.illegal.non-comment-found
+
+  functions-parameters:
+    - match: \b{{name}}\b
+      scope: variable.parameter.brightscript
+      push: functions-parameters-optional-value-and-type
+    - match: (?:\s*(,))
+      captures:
+        1: punctuation.separator.comma.brightscript
+
+  functions-parameters-optional-value-and-type:
+    - match: \s*({{assignment}})
+      captures:
+        1: keyword.operator.assignment.brightscript
+      push: expression
+      with_prototype:
+        - include: functions-parameters-optional-type
+    - include: functions-parameters-optional-type
+    - match: (?=\b)
+      pop: true
+
+  functions-parameters-optional-type:
+    - match: \s+(?i:(as))\s+({{typename}})\b
+      captures:
+        1: keyword.control.brightscript
+        2: keyword.declaration.type.brightscript
+      pop: true
+    - match: (?=[,)])
+      pop: true
+
+  expression:
+    - meta_scope: dev.expression
+    - match: (\()\s*
+      captures:
+        1: punctuation.section.parens.begin.brightscript
+      push:
+        - meta_scope: meta.parens.brightscript
+        - match: \s*(\))
+          captures:
+            1: punctuation.section.parens.end.brightscript
+          pop: true
+        - include: expression
+    - match: (?=\}|\]|\))
+      pop: true
+    - include: comments
+    - match: (?=({{space}}|\b)*(?:,|:|{{control}}))
+      pop: true
+    - include: closures
+    - include: function-call
+    - match: (?=[^\n:])
+      push:
+      - meta_scope: dev.expression.inner
+      - include: classes
+      - include: constants
+      # check operators before variables, because of things like "and", "or" and "not"
+      - include: value-modification
+      - include: value-access
+      - match: (?=\b|\B|\y|\Y|\s)
+        pop: true
+    # - match: ({{space}}+)
+    #   pop: true
+    - match: (?=\b|\B|\y|\Y|\s)
+      pop: true
+
+  classes:
+    - match: (?i:(?:{{space}}|\b)({{classes}})\b)
+      captures:
+        1: support.class.brightscript
+      pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#literals-constants
+  constants:
+    - include: constants-invalid
+    - include: constants-boolean
+    - include: constants-double
+    - include: constants-float
+    - include: constants-longinteger
+    - include: constants-integer
+    - include: constants-string
+    - include: constants-array
+    - include: constants-object
+
+  constants-invalid:
+    - match: (\b|{{space}}*)(?i:invalid)(?=\b|{{space}})
+      scope: constant.language.brightscript
+      pop: true
+
+  constants-boolean:
+    - match: (\b|{{space}}*)(?i:true|false)(?=\b|{{space}})
+      scope: constant.language.brightscript
+      pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#numeric-literals
+  constants-double:
+    # x23 is "#"
+    # Double is when it has 10 or more digits, uses D in exponent or ends with #
+    - match: (\b[0-9]+\x23|(\b[0-9]+|\s+)\.[0-9]+(?:[0-9]{9,}|D[+\-][0-9]+|\x23)(\b|$))
+      scope: constant.numeric.double.brightscript
+      pop: true
+
+  constants-float:
+    # x21 is "!"
+    # Float is anything not double that contains a decimal point, uses E in exponent or ends with !
+    - match: (\b[0-9]+\x21|(\b[0-9]+|\s+)\.[0-9]+(?:E[+\-][0-9]+|\x21)?(\b|$))
+      scope: constant.numeric.float.brightscript
+      pop: true
+
+  constants-longinteger:
+    # x26 is "&"
+    # Long integer is either hex notation or a digits that ends with &
+    - match: (?i:(\x26h[0-9a-f]+\x26)|([0-9]+\x26))
+      captures:
+        1: constant.numeric.integer.hexadecimal.brightscript
+        2: constant.numeric.integer.decimal.brightscript
+      pop: true
+
+  constants-integer:
+    # x25 is "%"
+    # Integer is a hex notation or digits, may end with %
+    - match: (?i:(\x26h[0-9a-f]+)|([0-9]+\x25?)|(?:\b|{{space}}*)(LINE_NUM)(?=\b|{{space}}))
+      captures:
+        1: constant.numeric.integer.hexadecimal.brightscript
+        2: constant.numeric.integer.decimal.brightscript
+        3: constant.language.brightscript
+      pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#string-literals
+  constants-string:
+    - match: \"
+      scope: string.quoted.double.brightscript punctuation.definition.string.begin.brightscript
+      push:
+        - meta_include_prototype: false
+        - meta_scope: meta.string
+        - match: \n
+          scope: invalid.illegal.newline
+          pop: 2
+        - match: \"\"
+        - match: \"
+          scope: string.quoted.double.brightscript punctuation.definition.string.end.brightscript
+          pop: 2
+        - match: ([^"\n]+)
+          scope: string.quoted.double.brightscript
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#array-literals
+  constants-array:
+    - match: ({{array}}\s*)
+      scope: punctuation.section.brackets.begin.brightscript
+      push:
+        - meta_scope: meta.brackets.brightscript
+        - match: (?:(,)|{{space}}*\n)
+          captures:
+            1: punctuation.separator.comma.brightscript
+        - match: \s*\]
+          scope: punctuation.section.brackets.end.brightscript
+          pop: 2
+        - match: (?=[^\s])
+          push: expression
+        - include: comments
+    - match: (?=\b|\B|\y|\Y|\s)
+      pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/expressions-variables-types.md#associative-array-literals
+  constants-object:
+    - match: \{\s*
+      scope: punctuation.section.braces.begin.brightscript
+      push:
+        - meta_scope: meta.braces.brightscript
+        - match: (?:(,)|{{space}}*\n)
+          captures:
+            1: punctuation.separator.comma.brightscript
+        - match: \s*\}
+          scope: punctuation.section.braces.end.brightscript
+          pop: 2
+        - match: (?:(\"[^"]*\")|({{name}}))\s*(:)\s*
+          captures:
+            1: variable.other.member.brightscript
+            2: variable.other.member.brightscript
+            3: punctuation.separator.colon.brightscript
+          push: expression
+        - include: comments
+    - match: (?=\b|\B|\y|\Y|\s)
+      pop: true
+
+  value-modification:
+    - match: \s*(?={{exponentation}}|{{additive}}|{{multiplicative}}|{{bitshift}}|{{comparisons}}|{{logical}})
+      set: operators-modifiers
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md
+  program-statements:
+    - meta_scope: dev.program-statements
+
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#goto-label
+    - match: (?:\b({{name}})(:))
+      captures:
+        1: entity.name.label.brightscript
+        2: punctuation.separator.colon.brightscript
+
+    - match: \b(?i:(goto)\s+({{name}}))
+      captures:
+        1: keyword.control.brightscript
+        2: entity.name.label.brightscript
+      push:
+        - match: (?={{space}}*[\n:])
+          pop: true
+        - match: ([^\n]*)
+          scope: invalid.illegal.content-after-goto-statement
+          pop: true
+
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/statement-summary.md
+    - match: (:)
+      scope: punctuation.terminator.brightscript
+
+    # DIM name[1,2,3]
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#dim-name-dim1-dim2--dimk
+    - match: \b(?i:dim)\b
+      captures:
+        0: keyword.control.brightscript
+      push:
+        - match: \b{{name}}\b
+          scope: variable.other.readwrite.brightscript
+          push:
+            - match: (?={{array}})
+              push: constants-array
+            - match: (?!{{array}})
+              pop: 2
+
+    - match: (?i:\bprint)(?={{space}}|\b)
+      scope: keyword.control.begin
+      push: print
+
+    - match: \?[^.\[\(@]
+      scope: keyword.control.begin
+      push: print
+
+    - include: try-catch
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#throw-expression
+    - match: (?i:\b(throw)\b)
+      scope: keyword.control.brightscript
+      push: expression
+
+    - include: if-then-else
+
+    - include: for-each-item-of
+    - include: for-expression
+    - include: while-expression
+    - match: \b(?i:exit\s(for|while))(?=\s|\b)
+      scope: keyword.control.brightscript
+
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#return-expression
+    - match: (?i:(return)(?={{space}}|\b))
+      scope: keyword.control.brightscript
+      push: expression
+
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#end
+    # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#stop
+    - match: (?i:(end|stop)(?={{space}}|\b))
+      scope: keyword.control.brightscript
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#print-item-list
+  print:
+    - meta_scope: keyword.control.brightscript
+    - include: comments
+    - match: \s*(?:(,)|(;))\s*
+      captures:
+        1: punctuation.separator.comma.brightscript
+        2: punctuation.separator.semicolon.brightscript
+    - match: (?=\n|:)
+      scope: keyword.control.end
+      pop: true
+    - match: (?=[\w\W])
+      push: expression
+      with_prototype:
+        - match: (?=\n|,|;)
+          pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#if-expression-then-statements-else-statements
+  if-then-else:
+    - meta_scope: dev.if
+    - match: (?:\s+|\b)(?i:(if))(?={{space}}+|\b)
+      captures:
+        1: keyword.control.conditional.brightscript
+      push: expression
+      with_prototype:
+        - include: then
+
+  then:
+    - meta_scope: dev.then
+    - match: (?i:{{space}}+(then))(?={{space}}*[^\n]+)
+      captures:
+        1: keyword.control.brightscript
+      pop: true
+      push: expression
+      with_prototype:
+        - match: (?=\n)
+          pop: true
+    - match: (?i:{{space}}+(then))?(?={{space}}*\n)
+      captures:
+        1: keyword.control.brightscript
+      pop: true
+      push: else
+
+  else:
+    - meta_scope: meta.block.brightscript
+    - match: (?:\s+|\b)(?i:(else{{space}}*if))(?={{space}}+|\b)
+      captures:
+        1: keyword.control.conditional.brightscript
+      pop: true
+      push: expression
+      with_prototype:
+        - include: then      
+    - match: \s*(?i:(else))(?={{space}}+|\n)
+      captures:
+        1: keyword.control.conditional.brightscript
+      pop: true
+      push: else
+    - match: \b(?i:(end{{space}}+if))\b
+      captures:
+        1: keyword.control.brightscript
+      pop: true
+    - include: code-block
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#for-each-item-in-object
+  for-each-item-of:
+    - match: (?i:\s+for\s+each\s+)
+      scope: keyword.control.brightscript
+      push: expression
+      with_prototype:
+        - match: (?i:\s+in\s+)
+          scope: keyword.control.brightscript
+          push: expression
+        - match: \n
+          pop: true
+          push: code-block
+          with_prototype:
+            - match: (?i:end\s+for(?=\s|\b))
+              scope: keyword.control.brightscript
+              pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#for-counter--exp-to-exp-step-exp--end-for
+  for-expression:
+    - match: (?i:\s+for\s+)
+      scope: keyword.control.brightscript
+      push: expression
+      with_prototype:
+        - match: (?i:\s+to\s+)
+          scope: keyword.control.brightscript
+          push: expression
+        - match: (?i:\s+step\s+)
+          scope: keyword.control.brightscript
+          push: expression
+        - match: \n
+          pop: true
+          push: code-block
+          with_prototype:
+            - match: (?i:end\s+for(?=\s|\b))
+              scope: keyword.control.brightscript
+              pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#while-expression--exit-while--end-while
+  while-expression:
+    - match: (?i:\s+while\s+)
+      scope: keyword.control.brightscript
+      push: expression
+      with_prototype:
+        - match: (?i:exit{{space}}+while)
+          scope: keyword.control.brightscript
+        - match: \n
+          pop: true
+          push: code-block
+          with_prototype:
+            - match: (?i:end\s+while(?=\s|\b))
+              scope: keyword.control.brightscript
+              pop: true
+
+  # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#try--catch-variable--end-try
+  try-catch:
+    - meta_scope: dev.try
+    - match: \b(?i:(try))(?={{space}}+|\b)
+      captures:
+        1: keyword.control.brightscript
+      push: code-block
+      with_prototype:
+        - include: catch
+
+  catch:
+    - meta_scope: dev.catch
+    - match: (?i:{{space}}+(catch){{space}}*({{name}}))
+      captures:
+        1: keyword.control.brightscript
+        2: variable.other.constant
+      pop: true
+      push: code-block
+      with_prototype:
+      - match: (?i:\b(end\s*try))
+        captures:
+          1: keyword.control.brightscript
+        pop: true
+
+  operators-modifiers:
+    - match: (?:({{exponentation}}|{{additive}}|{{multiplicative}})|({{bitshift}})|({{logical}}|{{comparisons}}))
+      captures:
+        1: keyword.operator.arithmetic.brightscript
+        2: keyword.operator.bitwise.brightscript
+        # "not", "or" and "and", so, according to https://www.sublimetext.com/docs/scope_naming.html#keyword they should
+        # be keyword.operator.word. Brightscript does not have any other form for those, so we stick with logical.
+        3: keyword.operator.logical.brightscript
+      pop: true
+
+  member-access:
+    - match: (?i:(?:\s+|\b)(m)(?:({{dot}})(top))?|({{dot}}|{{attr}})({{name}})|({{name}}))(?={{dot}}|{{array}}|{{attr}})
+      captures:
+        1: variable.language.brightscript
+        2: punctuation.accessor.brightscript
+        3: variable.language.brightscript
+        4: punctuation.accessor.brightscript
+        5: variable.other.member.brightscript
+        6: variable.other.brightscript
+      push: member-access-key
+
+  member-access-key:
+    - meta_scope: dev.member-access-key
+    - match: (?={{dot}}|{{attr}})
+      pop: true
+    - match: (?={{array}})
+      pop: true
+      push: constants-array
+    - match: (?!{{dot}}|{{array}}|{{attr}})
+      pop: true
+
+  function-call:
+    - include: member-access
+    - match: \s*({{dot}})?(?:({{globalFunctions}})|({{name}}))(?={{func}})
+      captures:
+        1: punctuation.accessor.brightscript
+        2: support.function.brightscript
+        3: variable.function.brightscript
+      push:
+        - meta_scope: meta.function-call.brightscript
+        - match: ({{func}})\s*
+          captures:
+            1: punctuation.section.parens.begin.brightscript
+          push:
+            - meta_scope: meta.parens.brightscript
+            - match: (,)
+              captures:
+                1: punctuation.separator.comma.brightscript
+            - match: \s*(\))
+              captures:
+                1: punctuation.section.parens.end.brightscript
+              pop: 2
+            - include: expression
+        - match: (?=\b|\B|\y|\Y|\s)
+          pop: true
+
+  assignment:
+    - include: member-access
+    - match: \s*(?:({{dot}})({{name}})({{typechar}})|({{name}})({{typechar}}))?\s*({{assignment}})
+      captures:
+        1: punctuation.accessor.brightscript
+        2: variable.other.member.brightscript
+        3: variable.other.member.brightscript punctuation.definition.variable
+        4: variable.other.readwrite.brightscript
+        5: variable.other.readwrite.brightscript punctuation.definition.variable
+        6: keyword.operator.assignment.brightscript
+      push:
+        - meta_scope: dev.assignment
+        - include: expression
+    - match: \s*(?:({{dot}})({{name}})|({{name}}))(\+\+|--)
+      captures:
+        1: punctuation.accessor.brightscript
+        2: variable.other.member.brightscript
+        3: variable.other.readwrite.brightscript
+        4: keyword.operator.arithmetic.brightscript
+
+  value-access:
+    - include: member-access
+    - match: \s*(?:({{dot}}|{{attr}})({{name}})|({{name}}))
+      captures:
+        1: punctuation.accessor.brightscript
+        2: variable.other.member.brightscript
+        3: variable.other.brightscript
+      pop: true
+    - match: (?=\b|\B)
+      pop: true

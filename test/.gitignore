@@ -1,0 +1,5 @@
+*.env
+*.zip
+*.keys
+*.brs
+builds/
