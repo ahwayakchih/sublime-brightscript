@@ -6,6 +6,8 @@ It started as a change to syntax file provided by [Roku](https://github.com/roku
 but after converting format and rewriting whole thing to add some basic, opinionated syntax checking,
 not much was left from the original.
 
+![Screenshot from 2022-06-10 16-25-13](https://user-images.githubusercontent.com/39827/173090357-fe2e4321-58a8-4310-88fd-9408bf507397.png)
+
 
 ## Features
 
@@ -18,6 +20,8 @@ not much was left from the original.
 - marks syntax with additional (compared to original) Sublimes' classes,
   which enables code folding and other built-in features
 - drops support for `bs` file extension, because it was taken by BrighterScript which is not supported (at least for now)
+
+![Screenshot from 2022-06-10 16-24-37](https://user-images.githubusercontent.com/39827/173090325-18a27a63-c5b9-4586-9084-70d492a61ed1.png)
 
 
 ## Installation (manual)
