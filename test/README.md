@@ -21,5 +21,5 @@ Telnet to your Roku device to observe potential error output and then sideload c
 To build and test channel, use following command:
 
 ```sh
-make deploy
+make
 ```

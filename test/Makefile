@@ -12,9 +12,10 @@ else
 	CONTAINER_ENGINE?=docker
 endif
 
-ROKUSDK:=${CONTAINER_ENGINE} run --rm -it --userns=keep-id -v ./:/app -e ROKU_ENV=${ROKU_ENV} ${IMAGE_NAME}:${IMAGE_VERSION}
+NOW?=$(shell date +%Y%m%dT%H%M%S)
+ROKUSDK:=${CONTAINER_ENGINE} run --rm -it --userns=keep-id -v ./:/app -v ~/www/roku-dev-container/container/bin:/usr/localbin -v ~/www/roku-dev-container/container/assets:/usr/local/share/roku -e NOW=${NOW} -e ROKU_ENV=${ROKU_ENV} ${IMAGE_NAME}:${IMAGE_VERSION}
 
-all: deploy
+default: build deploy
 
 info: is_not_home
 	@echo 'Using "'${CONTAINER_ENGINE}'" container engine, set CONTAINER_ENGINE=your_engine_of_choice to override that'
@@ -23,15 +24,18 @@ init: info
 	@${ROKUSDK} make init
 
 build: info
+	@rm -f ./source/main.brs
+	@cp ../syntax_test_BrightScript.brs ./source/main.brs
 	@${ROKUSDK} make build
 
 deploy: info
-	@rm -f ./source/main.brs
-	@cp ../syntax_test_BrightScript.brs ./source/main.brs
 	@${ROKUSDK} make deploy
 
 test:
 	@${ROKUSDK} make test
+
+screenshot:
+	@${ROKUSDK} make screenshot
 
 shell: info
 	@${ROKUSDK} || exit 0
@@ -53,4 +57,4 @@ is_not_home:
 
 
 # Mark targets that do not create files, and should be run everytime they are mentioned
-.PHONY: all info init build deploy testOnHost testOnRokus test shell upgrade clean is_not_home 
+.PHONY: default info init build deploy testOnHost testOnRokus test shell upgrade clean is_not_home 
