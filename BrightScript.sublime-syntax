@@ -509,6 +509,11 @@ contexts:
 
   then:
     - meta_scope: dev.then
+    - match: (?i:{{space}}+(then))?(?={{space}}*\n)
+      captures:
+        1: keyword.control.brightscript
+      pop: true
+      push: else
     - match: (?i:{{space}}+(then))(?={{space}}*[^\n]+)
       captures:
         1: keyword.control.brightscript
@@ -517,11 +522,6 @@ contexts:
       with_prototype:
         - match: (?=\n)
           pop: true
-    - match: (?i:{{space}}+(then))?(?={{space}}*\n)
-      captures:
-        1: keyword.control.brightscript
-      pop: true
-      push: else
 
   else:
     - meta_scope: meta.block.brightscript

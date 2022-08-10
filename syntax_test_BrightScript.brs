@@ -635,6 +635,15 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 		end if
 	end if
 
+	' Spaces after then should be ignored
+	if one = 1 then   
+	'<- keyword.control.conditional
+		two = 2
+	else
+	'<- keyword.control.conditional
+		one = 1
+	end if
+
 	if one
 		two = 2
 		if two
