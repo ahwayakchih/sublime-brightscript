@@ -450,16 +450,16 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 	'                              ^^^^^^^^^^^^^ variable.other
 	'                                           ^ punctuation.section.brackets.end
 
-	myArray[0][0] = 0
+	myArray[0][0][0] = {one: [false]}
 	'      ^ punctuation.section.brackets.begin
 	'       ^ meta.brackets constant.numeric.integer.decimal
 	'        ^ punctuation.section.brackets.end
 	'         ^ punctuation.section.brackets.begin
 	'          ^ meta.brackets constant.numeric.integer.decimal
 	'           ^ punctuation.section.brackets.end
-	'             ^ keyword.operator.assignment
+	'                ^ keyword.operator.assignment
 
-	if myArray[1].one[0]
+	if myArray?[0]?[0]?[0]?.one[0] = invalid
 		one = 1
 	end if
 
@@ -612,6 +612,7 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 	'                                        ^^^^^^^ meta.function-call meta.function-call
 
 	myArray = [{one: [{two: 2}]}]
+	myArray = [1, 0]
 
 	if one = myArray[myArray[1]] then print meaningOfLife.toStr()
 	'<- keyword.control.conditional
