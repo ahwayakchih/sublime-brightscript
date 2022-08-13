@@ -374,6 +374,10 @@ contexts:
         - match: (?:(,)|{{space}}*\n)
           captures:
             1: punctuation.separator.comma.brightscript
+        - match: \s*\]\s*(?={{array}}\s*)
+          # this handles assignment of element in array in array, e.g., `array[0][0] = 0`
+          scope: punctuation.section.brackets.end.brightscript
+          pop: 1
         - match: \s*\]
           scope: punctuation.section.brackets.end.brightscript
           pop: 2

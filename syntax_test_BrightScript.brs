@@ -447,6 +447,15 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 	'                              ^^^^^^^^^^^^^ variable.other
 	'                                           ^ punctuation.section.brackets.end
 
+	myArray[0][0] = 0
+	'      ^ punctuation.section.brackets.begin
+	'       ^ meta.brackets constant.numeric.integer.decimal
+	'        ^ punctuation.section.brackets.end
+	'         ^ punctuation.section.brackets.begin
+	'          ^ meta.brackets constant.numeric.integer.decimal
+	'           ^ punctuation.section.brackets.end
+	'             ^ keyword.operator.assignment
+
 	if myArray[1].one[0]
 		one = 1
 	end if
