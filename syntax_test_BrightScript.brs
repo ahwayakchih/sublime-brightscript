@@ -18,6 +18,9 @@ rem Another comment
 ' <- comment.line.apostrophe.brightscript punctuation.definition.comment.apostrophe.brightscript
 '            ^ comment.line.apostrophe.brightscript
 
+Library "v30/bslCore.brs"
+' <- meta.preprocessor keyword.control.include.brightscript
+
 #const forceInvalid = false
 ' <- meta.preprocessor keyword.control.brightscript punctuation.definition.keyword
 '^^^^^ meta.preprocessor keyword.control.brightscript

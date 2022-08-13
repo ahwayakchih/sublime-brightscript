@@ -57,6 +57,7 @@ contexts:
   # Unless written otherwise, order matters for all of these!
 
   main:
+    - include: libraries
     - include: comments
     - include: functions
     - include: consts
@@ -72,6 +73,13 @@ contexts:
     - include: assignment
     - match: (?:[^\s]+)
       scope: invalid.illegal.non-code-block-content
+
+  libraries:
+    - match: (?:\s*)((?i:Library)\s+(?=[^\n]*\n))
+      captures:
+        0: meta.preprocessor.include.brightscript
+        1: keyword.control.include.brightscript
+      push: constants-string
 
   comments:
     - match: (?:\s*)((')(?:[^\n]+|(?=\n)))
