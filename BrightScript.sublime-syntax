@@ -35,7 +35,7 @@ variables:
   logical: '\b(?i:NOT|AND|OR)\b'
   operator: '(?:{{assignment}}|{{exponentation}}|{{additive}}|{{multiplicative}}|{{bitshift}}|{{comparisons}}|{{logical}})'
   # control
-  control: '\b(?i:if|then|else|elseif|end if|for|to|step|for each|in|exit for|end for|while|exit while|end while|try|catch|end\s?try|throw|end|goto|stop|return|print)\b'
+  control: '\b(?i:if|then|else|elseif|end if|for|to|step|for each|in|continue for|exit for|end for|while|continue while|exit while|end while|try|catch|end\s?try|throw|end|goto|stop|return|print)\b'
   # https://developer.roku.com/en-gb/docs/references/brightscript/language/runtime-functions.md
   globalRuntimeFunctions: '\b(?i:CreateObject|Type|GetGlobalAA|Box|Run|Eval|GetLastRunCompileError|GetLastRunRuntimeError)\b'
   # https://developer.roku.com/docs/references/brightscript/language/global-utility-functions.md
@@ -479,7 +479,7 @@ contexts:
     - include: for-each-item-of
     - include: for-expression
     - include: while-expression
-    - match: \b(?i:exit\s(for|while))(?=\s|\b)
+    - match: \b(?i:(?:continue|exit)\s(for|while))(?=\s|\b)
       scope: keyword.control.brightscript
 
     # https://developer.roku.com/en-gb/docs/references/brightscript/language/program-statements.md#return-expression

@@ -696,6 +696,10 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 		for each i in myArray
 			test = 1
 	' ^^^^^^^^^^^^^^^ meta.block meta.block meta.block
+			if i < 2
+				continue for
+				' ^^^^^^^^^^ keyword.control.brightscript
+			end if
 		end for
 	end for
 
@@ -713,6 +717,10 @@ function foo (bar as boolean, other = "txt") as dynamic rem inline comment
 	while one = 1 and two = 2 and three <> 3
 		three++
 	' ^^^^^^^^^^^^^^^ meta.block meta.block
+		if one <> 1
+			continue while
+			' ^^^^^^^^^^ keyword.control.brightscript
+		end if
 	end while
 
     if type(myArray) = "roArray" AND simplestFunction() = invalid
