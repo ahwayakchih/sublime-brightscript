@@ -110,6 +110,12 @@ contexts:
         4: keyword.operator.assignment.brightscript
         5: constant.language.brightscript
         6: entity.name.constant.brightscript
+    - match: (?i:(#)(error)(\s[^\n]+)?)
+      captures:
+        0: meta.preprocessor.diagnostic.brightscript
+        1: keyword.control.error.brightscript punctuation.definition.keyword
+        2: keyword.control.error.brightscript
+        3: meta.string string.unquoted.brightscript
     - match: (?i:(#)(if|else{{space}}+if){{space}}+(?:(true|false)|({{name}}))(?:\b|\s+))
       captures:
         0: meta.preprocessor.brightscript

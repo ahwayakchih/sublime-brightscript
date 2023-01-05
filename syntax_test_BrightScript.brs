@@ -34,6 +34,10 @@ Library "v30/bslCore.brs"
 '   ^^^^^^^^^^^^ entity.name.constant.brightscript
 some invalid stuff
 '<- invalid.illegal.non-function-or-comment
+	#error This is compliation error message
+	'<- meta.preprocessor.diagnostic keyword.control.error
+	'^^^^^ meta.preprocessor.diagnostic keyword.control.error
+	'     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string string.unquoted
 #else if false
 '<- meta.preprocessor keyword.control punctuation.definition.keyword
 '^^^^^^^ meta.preprocessor keyword.control
